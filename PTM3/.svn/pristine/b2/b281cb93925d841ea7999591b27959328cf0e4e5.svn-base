@@ -1,0 +1,54 @@
+package ptm.team.vo;
+
+public class PtVO extends MemberVO{
+	private int p_no;
+	private int t_no;
+	private String m_qr;
+	private String p_state;
+	private String p_start;
+	private String p_commend;
+	
+	public PtVO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public int getP_no() {
+		return p_no;
+	}
+	public void setP_no(int p_no) {
+		this.p_no = p_no;
+	}
+	public int getT_no() {
+		return t_no;
+	}
+	public void setT_no(int t_no) {
+		this.t_no = t_no;
+	}
+	public String getM_qr() {
+		return m_qr;
+	}
+	public void setM_qr(String m_qr) {
+		this.m_qr = m_qr;
+	}
+	public String getP_state() {
+		return p_state;
+	}
+	public void setP_state(String p_state) {
+		this.p_state = p_state;
+	}
+	public String getP_start() {
+		return p_start;
+	}
+	public void setP_start(String p_start) {
+		this.p_start = p_start;
+	}
+	public String getP_commend() {
+		return p_commend;
+	}
+	public void setP_commend(String p_commend) {
+		this.p_commend = p_commend;
+	}
+
+	
+	
+}

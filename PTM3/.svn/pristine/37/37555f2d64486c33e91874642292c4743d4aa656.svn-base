@@ -1,0 +1,41 @@
+package ptm.trainer.controller;
+
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import ptm.team.service.T_ManagementService;
+import ptm.team.vo.PtVO;
+import ptm.team.vo.ListVO;
+import ptm.team.vo.SessionVO;
+
+@Controller
+@RequestMapping(value="/Trainer") 
+public class T_ListController 
+{	
+	@Inject
+	T_ManagementService t_managementService;
+	
+	@RequestMapping(value = "/T-List")//uri
+	public String list(ListVO vo, Model model, HttpServletRequest request) throws Exception
+	{	
+		/*
+		 * HttpSession session = request.getSession();
+		 * 
+		 * SessionVO temp = (SessionVO)session.getAttribute("user");
+		 */
+		
+		//세션에 있는 id를 이용해서 t_no를 조회해온후
+		//searchVO에 t_no에 set 해주는 작업 필요
+		
+		List<PtVO> list = t_managementService.selectList(vo);
+		model.addAttribute("list", list);
+		return "Trainer/T-List";
+	}
+}

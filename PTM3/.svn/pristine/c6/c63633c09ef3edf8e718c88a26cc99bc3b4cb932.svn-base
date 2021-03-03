@@ -1,0 +1,64 @@
+package ptm.trainer.controller;
+
+
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import ptm.team.service.TrainerService;
+import ptm.team.util.SHA256;
+import ptm.team.vo.TrainerVO;
+
+@Controller
+public class T_LoginController
+{	
+	//로깅을 위한 변수
+	private static final Logger logger = LoggerFactory.getLogger(T_LoginController.class);
+	
+	
+	@Inject
+	private TrainerService trainerService;
+	
+	
+	//로그인 화면(메인)
+	@RequestMapping(value = "/")//uri
+	public String login(){	
+	
+		return "Trainer/T-Login";//회원가입 화면으로 이동
+	}
+	
+	//로그인 처리
+	@RequestMapping(value="/T-LoginOK",method=RequestMethod.POST)
+	public String loginOK(Model model,TrainerVO trainerVO, HttpServletRequest hsr, HttpSession session) throws Exception
+	{
+		String encryPassword = SHA256.encrypt(trainerVO.getT_pw());
+		trainerVO.setT_pw(encryPassword);
+		boolean result = trainerService.selectLogin(trainerVO, session);
+		if(result == true) {
+			model.addAttribute("msg", "success");
+		}else {
+			model.addAttribute("msg", "failure");
+		}
+		return "redirect:Trainer/T-List";
+	}//ModelAndView 데이터 이동과 화면 처리가 동시에 가능
+	
+	@RequestMapping(value="/Trainer/T-Logout")
+	public ModelAndView logout(HttpSession session) throws Exception
+	{
+		trainerService.logout(session);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("Trainer/T-Login");
+		mav.addObject("msg", "logout");
+		return mav;
+	}
+}

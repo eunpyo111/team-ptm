@@ -1,0 +1,11 @@
+package ptm.team.service;
+
+import ptm.team.vo.MemberVO;
+
+//예시입니다 
+public interface T_SearchService 
+{
+	public int InsertMember(MemberVO membervo) throws Exception;
+	public int SelectQR(String m_qr) throws Exception;
+
+}

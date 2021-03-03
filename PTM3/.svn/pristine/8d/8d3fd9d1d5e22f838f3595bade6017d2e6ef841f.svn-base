@@ -1,0 +1,74 @@
+package ptm.trainer.controller;
+
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import ptm.team.service.TrainerService;
+import ptm.team.util.SHA512;
+import ptm.team.vo.TrainerVO;
+
+@Controller
+@RequestMapping(value="/Trainer") 
+public class T_JoinController 
+{	
+	@Inject
+	private TrainerService trainerService;
+	
+	@RequestMapping(value = "/T-Join")//uri
+	public String join(){	
+	
+		return "Trainer/T-Join";//회원가입 화면으로 이동
+	}
+	
+	@RequestMapping(value="/T-JoinOK",method=RequestMethod.POST)
+	public String joinOK(TrainerVO trainerVO, Model model, HttpServletRequest request) throws Exception
+	{
+		// 암호 확인
+		//System.out.println("첫번째:" + trainerVO.getT_pw());
+		// 비밀번호 암호화 (sha512)
+		String encryPassword = SHA512.encrypt(trainerVO.getT_pw());
+		trainerVO.setT_pw(encryPassword);
+		//System.out.println("두번째:" + trainerVO.getT_pw());
+		
+		trainerService.insertTrainer(trainerVO);
+		
+		return "Trainer/T-Login";
+	}
+	
+	@RequestMapping(value="/T-JoinIdCheck", method=RequestMethod.POST)
+	@ResponseBody
+	public int joinIdCheck(String t_id) throws Exception {
+		
+		int a = trainerService.selectIdCheck(t_id);
+	
+		return a;
+	}
+	
+	@RequestMapping(value="/T-JoinEmailCheck", method=RequestMethod.POST)
+	@ResponseBody
+	public int joinEmailCheck(String t_email) throws Exception {
+		
+		int a = trainerService.selectEmailCheck(t_email);
+	
+		return a;
+	}
+	
+	@RequestMapping(value="/T-JoinPhoneCheck", method=RequestMethod.POST)
+	@ResponseBody
+	public int joinPhoneCheck(String t_phone) throws Exception {
+		
+		int a = trainerService.selectPhoneCheck(t_phone);
+	
+		return a;
+	}
+	
+	
+	
+}

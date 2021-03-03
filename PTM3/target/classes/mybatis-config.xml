@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0/EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- vo의 위치를 정하고 별칭을 설정 -->
+	<typeAliases>
+		<typeAlias type	= "ptm.team.vo.ExerciseVO" alias = "exerciseVO"/>
+		<typeAlias type	= "ptm.team.vo.MemberVO"   alias = "memberVO"/>
+		<typeAlias type	= "ptm.team.vo.PtVO"       alias = "ptVO"/>
+		<typeAlias type	= "ptm.team.vo.RoundVO"    alias = "roundVO"/>
+		<typeAlias type	= "ptm.team.vo.SessionVO"  alias = "sessionVO"/>
+		<typeAlias type	= "ptm.team.vo.TrainerVO"  alias = "trainerVO"/>
+		<typeAlias type = "ptm.team.vo.ListVO" 	   alias = "listVO" />
+		<typeAlias type = "ptm.team.vo.SearchVO"   alias = "searchVO" />
+	</typeAliases>
+</configuration>

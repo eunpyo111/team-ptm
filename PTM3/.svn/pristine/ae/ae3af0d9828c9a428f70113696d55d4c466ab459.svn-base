@@ -1,0 +1,30 @@
+package ptm.trainer.controller;
+
+import java.util.List;
+import java.util.Locale;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import ptm.team.service.T_ManagementService;
+import ptm.team.vo.RoundVO;
+
+@Controller
+@RequestMapping(value="/Trainer") 
+public class T_RoundController 
+{	
+	@Inject
+	T_ManagementService t_managementService;
+	
+	@RequestMapping(value = "/T-Round")//uri
+	public String selectExercise(Model model, RoundVO vo) throws Exception
+	{	
+		RoundVO roundVO = t_managementService.selectExercise(vo);
+		
+		model.addAttribute("roundVO", roundVO);
+		return "Trainer/T-Round";
+	}
+}

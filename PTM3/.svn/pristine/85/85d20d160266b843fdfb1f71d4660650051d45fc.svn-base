@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ptm.team.mapper.T_ManagementMapper">
+
+	<!-- PT등록된 회원 리스트 / T-List.jsp -->
+	<!-- UNION을 사용해서 다른 테이블(pt, members)을 하나로 합쳐서 뿌려줌, UNION을 사용안하면 각각 두 테이블을 불러와서 2개씩 나옴 -->
+	<select id="selectList" resultType="ptm.team.vo.PtVO" parameterType="ptm.team.vo.ListVO">
+		SELECT p.p_no
+			 , p.t_no
+			 , p.m_qr
+			 , p.p_state
+			 , p.p_ok
+			 , p.p_comment
+			 , m.m_name
+			 , m.m_realP
+		  FROM pt p left join members m on p.m_qr = m.m_qr
+		 WHERE p.t_no = #{t_no}
+		 <if test = "searchMember != null">
+		   AND m.m_name like CONCAT ('%', #{searchMember},'%')
+		 </if>
+		   AND p.p_state not in ('C')
+		 UNION 
+		SELECT p.p_no
+			 , p.t_no
+			 , p.m_qr
+			 , p.p_state
+			 , p.p_ok
+			 , p.p_comment
+			 , m.m_name
+			 , m.m_realP
+		  FROM members m left join pt p on p.m_qr = m.m_qr
+		 WHERE p.t_no = #{t_no}
+		 <if test = "searchMember != null">
+		   AND m.m_name like CONCAT ('%', #{searchMember},'%')
+		 </if>
+		   AND p.p_state not in ('C')
+	</select>
+	
+	<!-- PT 리스트에서 회원 삭제처리 p_state update / T-List.jsp -->
+	<update id="updateList" parameterType="int">
+		UPDATE pt SET
+			   p_state = 'C'
+		 WHERE p_no = #{p_no}
+	</update>
+	
+	<!-- PT 등록된 회원의 정보 / T-Chart.jsp -->
+	<select id="selectPtm" resultType="ptm.team.vo.PtVO" parameterType="ptm.team.vo.RoundVO">
+		SELECT p.p_no
+		     , p.t_no
+		     , p.m_qr
+		     , (SELECT m_name  FROM members WHERE m_qr = p.m_qr) as m_name 
+		     , (SELECT m_phone FROM members WHERE m_qr = p.m_qr) as m_phone
+		     , (SELECT m_email FROM members WHERE m_qr = p.m_qr) as m_email
+		     , (SELECT m_realP FROM members WHERE m_qr = p.m_qr) as m_realP
+	 	  FROM pt p
+		 WHERE p.t_no = #{t_no}
+	  	   AND p.p_no = #{p_no}
+	  	   AND p.m_qr = #{m_qr}
+	</select>
+	
+	<!-- PT받고있는 회원의 회차 / T-Round.jsp -->
+	<select id="selectExercise" resultType="ptm.team.vo.RoundVO" parameterType="ptm.team.vo.RoundVO">
+		 SELECT r.r_no
+			  , r.t_no
+			  , r.m_qr
+			  , r.p_no
+			  , r.r_ct
+			  , r.r_date
+		   FROM round r
+		  WHERE r.t_no = #{t_no}
+		    AND r.p_no = #{p_no}
+		    AND r.m_qr = #{m_qr}
+	</select>
+	
+	<!-- PT받고있는 회원의 회차 추가 / T-Round.jsp -->
+	<insert id="insertRound" parameterType="ptm.team.vo.RoundVO">
+	<![CDATA[
+		INSERT INTO round
+		(
+			  t_no
+			, m_qr
+			, p_no
+			, r_ct
+			, r_date
+		)VALUES
+		(
+			  #{t_no}
+			, #{m_qr}
+			, #{p_no}
+			, #{r_ct}
+			, now()
+		)
+	]]>
+	<selectKey resultType="integer" keyProperty="r_no" order="AFTER">
+		SELECT MAX(r_no) FROM round
+	</selectKey>
+	</insert>
+	
+	<!-- PT받고있는 회원의 회차 추가 후 가장 마지막 회차 불러올때 / T-Round.jsp -->
+	<select id="selectRound" parameterType="int" resultType="ptm.team.vo.RoundVO">
+		SELECT  r.r_no
+			  , r.t_no
+			  , r.m_qr
+			  , r.p_no
+			  , r.r_ct
+			  , r.r_date
+			  , m.m_name  
+			  , m.m_phone 
+			  , m.m_email 
+			  , m.m_realP 
+		  FROM round r, members m
+		 WHERE r.r_no = #{r_no}
+	</select>
+	
+	
+	
+</mapper>

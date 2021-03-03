@@ -1,0 +1,23 @@
+package ptm.team.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+
+//VO 전부 import 했으니 쓸것만 쓰시고 안쓰면 지워주세요
+import ptm.team.vo.ExerciseVO;
+import ptm.team.vo.PtVO;
+import ptm.team.vo.RoundVO;
+import ptm.team.vo.ListVO;
+import ptm.team.vo.TrainerVO;
+import ptm.team.vo.MemberVO;
+//DAO
+import ptm.team.dao.T_SearchDAO;
+@Service
+public class  T_SearchServiceImpl implements T_SearchService{
+	
+
+}

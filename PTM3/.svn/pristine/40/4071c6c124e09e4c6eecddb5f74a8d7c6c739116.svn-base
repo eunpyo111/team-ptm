@@ -1,0 +1,45 @@
+package ptm.team.service;
+
+import javax.inject.Inject;
+import org.springframework.stereotype.Service;
+import ptm.team.vo.TrainerVO;
+import ptm.team.dao.TrainerDAO;
+
+
+@Service
+public class TrainerServiceImpl implements TrainerService{
+	
+	@Inject
+	TrainerDAO trainerDAO;
+	
+	@Override
+	public int insertTrainer(TrainerVO vo)throws Exception
+	{	
+		return trainerDAO.insertTrainer(vo);
+	}
+	
+	@Override
+	public int selectIdCheck(String t_id)throws Exception
+	{	
+		return trainerDAO.selectIdcheck(t_id);
+	}
+	
+	@Override
+	public int selectEmailCheck(String t_email)throws Exception
+	{	
+		return trainerDAO.selectEmailCheck(t_email);
+	}
+	
+	@Override
+	public int selectPhoneCheck(String t_phone)throws Exception
+	{	
+		return trainerDAO.selectPhoneCheck(t_phone);
+	}
+	
+	@Override
+	public TrainerVO selectLogin(TrainerVO vo)throws Exception
+	{	
+		return trainerDAO.selectLogin(vo);
+	}
+
+}

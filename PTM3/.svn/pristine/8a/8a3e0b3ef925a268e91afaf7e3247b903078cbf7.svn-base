@@ -1,0 +1,18 @@
+package ptm.team.service;
+
+import java.util.List;
+
+//VO 전부 import 했으니 쓸것만 쓰시고 안쓰면 지워주세요
+import ptm.team.vo.ExerciseVO;
+import ptm.team.vo.ListVO;
+import ptm.team.vo.PtVO;
+import ptm.team.vo.RoundVO;
+import ptm.team.vo.TrainerVO;
+import ptm.team.vo.MemberVO;
+
+//예시입니다 
+public interface T_ManagementService 
+{
+	public List<PtVO> selectList(ListVO vo) throws Exception;
+	public RoundVO selectExercise(RoundVO vo) throws Exception;
+}

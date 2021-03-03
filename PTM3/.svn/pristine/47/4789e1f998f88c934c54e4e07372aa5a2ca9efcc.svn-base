@@ -1,0 +1,37 @@
+package ptm.team.dao;
+
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
+
+
+//VO 전부 import 했으니 쓸것만 쓰시고 안쓰면 지워주세요
+import ptm.team.vo.ExerciseVO;
+import ptm.team.vo.PtVO;
+import ptm.team.vo.RoundVO;
+import ptm.team.vo.ListVO;
+import ptm.team.vo.TrainerVO;
+import ptm.team.vo.MemberVO;
+
+@Repository
+public class T_ManagementDAO 
+{
+	@Inject
+	private SqlSession sqlSession;
+	
+	private static final String Namespace = "ptm.team.mapper.T_ManagementMapper";
+
+	public List<PtVO> selectList(ListVO vo) 
+	{
+		return sqlSession.selectList(Namespace+".selectList",vo);
+	}
+	
+	public RoundVO selectExercise(RoundVO vo) 
+	{
+		return sqlSession.selectOne(Namespace+".selectExercise", vo);
+	}
+}

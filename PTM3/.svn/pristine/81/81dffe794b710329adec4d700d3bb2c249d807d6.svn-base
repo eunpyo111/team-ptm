@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ptm.team.mapper.TrainerMapper">
+	
+	<insert id="insertTrainer" parameterType = "trainerVO">
+	<![CDATA[	
+		INSERT INTO trainer(
+			 	 t_name
+				,t_id
+				,t_pw
+				,t_email
+				,t_phone
+				,t_addr1
+				,t_addr2
+				,t_originP
+				,t_realP
+		)VALUES(
+				 #{t_name}
+				,#{t_id}
+				,#{t_pw}
+				,#{t_email}
+				,#{t_phone}
+				,#{t_addr1}
+				,#{t_addr2}
+				,#{t_originP}
+				,#{t_realP}
+		)
+	]]>
+	<selectKey resultType="integer" keyProperty="t_no" order="AFTER">
+		SELECT MAX(t_no) 
+		FROM trainer
+	</selectKey>
+	</insert>
+	
+	<select id="selectIdCheck" resultType="integer" parameterType ="String">
+		SELECT COUNT(*) 
+		FROM trainer 
+		WHERE t_id = #{t_id};
+	</select>
+	
+	<select id="selectEmailCheck" resultType="integer" parameterType ="String">
+		SELECT COUNT(*) 
+		FROM trainer 
+		WHERE t_email = #{t_email};
+	</select>
+	
+	<select id="selectPhoneCheck" resultType="integer" parameterType ="String">
+		SELECT COUNT(*) 
+		FROM trainer 
+		WHERE t_phone = #{t_phone};
+	</select>
+
+	<select id="selectLogin" resultType ="trainerVO" parameterType="trainerVO" >
+		SELECT *
+		FROM  trainer
+		WHERE t_id = #{t_id}
+	</select>
+	
+</mapper>

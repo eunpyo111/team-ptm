@@ -1,0 +1,44 @@
+package ptm.trainer.controller;
+
+
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import ptm.team.service.TrainerService;
+import ptm.team.vo.TrainerVO;
+
+@Controller
+public class T_LoginController
+{	
+	@Inject
+	private TrainerService trainerService;
+	
+	@RequestMapping(value = "/")//uri
+	public String login(){	
+	
+		return "Trainer/T-Login";//회원가입 화면으로 이동
+	}
+	
+	@RequestMapping(value="/T-LoginOK",method=RequestMethod.POST)
+	public String loginOK(TrainerVO trainerVO, HttpServletRequest hsr, HttpSession hs) throws Exception
+	{
+		//System.out.println("trainerVO::"+trainerVO.toString());
+		//trainerService.insertTrainer(trainerVO);
+		hs = hsr.getSession();
+		TrainerVO vo = trainerService.selectLogin(trainerVO);
+		if(vo == null)
+		{
+			hs.setAttribute("trainer", null);
+		}else {
+			hs.setAttribute("trainer", vo);
+		}
+		
+		return "Trainer/T-List";
+	}
+}

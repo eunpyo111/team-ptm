@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ptm.team.mapper.T_SearchMapper">
+
+	<insert id="InsertMember" parameterType="memberVO">
+	<![CDATA[
+		INSERT INTO members
+		(
+			 m_qr
+			,m_name
+			,m_email
+			,m_phone
+			,m_joindate
+			,m_realP
+
+		)VALUES
+		(
+			  #{m_qr}
+			 ,#{m_name}
+			 ,#{m_email}
+			 ,#{m_phone}
+			,now()
+			,#{m_realP}
+		)
+	]]>
+	</insert>
+	
+	<select id="SelectQR" resultType="int" parameterType="String">
+		 SELECT count(*) from
+		 members where m_qr = #{m_qr}
+	</select>
+	
+	
+	<select id="SearchMember" resultType="memberVO" parameterType="searchVO">
+		 SELECT m_name, m_phone, m_joindate from
+		 members 
+		 where 1=1
+		 <if test="keyword neq null">
+		 	<if test="searchType eq 'name'">
+		 		AND m_name like CONCAT('%',#{keyword},'%');
+			</if> 
+		 	<if test="searchType eq 'phone'">
+		 		AND m_phone like CONCAT('%',#{keyword},'%');
+			</if> 
+		 </if> 
+	</select>
+</mapper>

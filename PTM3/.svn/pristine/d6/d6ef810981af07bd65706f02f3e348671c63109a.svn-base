@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ptm.team.mapper.T_SearchMapper">
+	<!--회원처음 등록  -->
+	<insert id="InsertMember" parameterType="memberVO">
+	<![CDATA[
+		INSERT INTO members
+		(
+			 m_qr
+			,m_name
+			,m_email
+			,m_phone
+			,m_joindate
+			,m_realP
+
+		)VALUES
+		(
+			  #{m_qr}
+			 ,#{m_name}
+			 ,#{m_email}
+			 ,#{m_phone}
+			,now()
+			,#{m_realP}
+		)
+	]]>
+	</insert>
+	<!--회원pt등록  -->
+	<insert id="InsertPT" parameterType="ptVO">
+		<![CDATA[
+			INSERT INTO pt
+			(
+			t_no
+			,m_qr
+			,p_state
+			,p_ok
+			)
+			values
+			(
+			#{t_no}
+			,#{m_qr}
+			,'A'
+			,now()
+			);	
+	
+		]]>
+	</insert>
+	<!-- qr중복검사 -->
+	<select id="SelectQR" resultType="int" parameterType="String">
+		 SELECT count(*) from
+		 members where m_qr = #{m_qr}
+	</select>
+	
+	<!--회원 조회  -->
+	<select id="SearchMember" resultType="memberVO" parameterType="searchVO">
+		 SELECT m.m_name, m.m_phone, m.m_joindate, m.m_qr, m.m_realP
+		 , (SELECT count(*) from PT p where p.m_qr = m.m_qr and t_no = #{t_no})
+		 as ptCnt from members m
+		 where 1=1
+		 <if test="keyword neq null">
+		 	<if test="searchType eq 'name'">
+		 		AND m_name like CONCAT('%',#{keyword},'%');
+			</if> 
+		 	<if test="searchType eq 'phone'">
+		 		AND m_phone like CONCAT('%',#{keyword},'%');
+			</if> 
+		 </if> 
+	</select>
+</mapper>

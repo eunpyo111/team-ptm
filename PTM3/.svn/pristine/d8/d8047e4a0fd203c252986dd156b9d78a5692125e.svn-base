@@ -1,0 +1,49 @@
+package ptm.trainer.controller;
+
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import ptm.team.service.T_ManagementService;
+import ptm.team.vo.PtVO;
+import ptm.team.vo.RoundVO;
+import ptm.team.vo.ListVO;
+
+@Controller
+@RequestMapping(value="/Trainer") 
+public class T_ListController 
+{	
+	@Inject
+	T_ManagementService t_managementService;
+	
+	//PT등록된 회원의 리스트
+	@RequestMapping(value = "/T-List")
+	public String list(ListVO vo, Model model, HttpServletRequest request) throws Exception
+	{	
+		HttpSession session = request.getSession();
+		
+		int sT_no = (Integer)session.getAttribute("t_no");
+	
+		vo.setT_no(sT_no);
+		
+		List<PtVO> list = t_managementService.selectList(vo);
+		
+		model.addAttribute("list", list);
+		return "Trainer/T-List";
+	}
+	
+	//PT등록된 회원 삭제 처리
+	@RequestMapping(value = "/ajaxlistUpdate")
+	public String listUpdate(RoundVO vo, Model model) throws Exception
+	{
+		t_managementService.updateList(vo);
+		
+		return "redirect:Trainer/T-List";
+	}
+}

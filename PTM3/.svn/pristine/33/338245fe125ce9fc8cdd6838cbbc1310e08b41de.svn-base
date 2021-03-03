@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ptm.team.mapper.T_ManagementMapper">
+
+	<insert id="InsertMemvber" parameterType="ptm.team.vo.MemberVO">
+	<![CDATA[
+		INSERT INTO member
+		(
+			 m_qr
+			,m_name
+			,m_email
+			,m_phone
+			,m_joindate
+		)VALUES
+		(
+			  #{m_qr}
+			 ,#{m_name}
+			 ,#{m_email}
+			 ,#{m_phone}
+			,now()
+		)
+	]]>
+	</insert>
+	
+	<select id="SelectQR" resultType="int" parameterType="String">
+		 SELECT count(*) from
+		 members where m_qr = #{m_qr}
+	</select>
+	
+</mapper>

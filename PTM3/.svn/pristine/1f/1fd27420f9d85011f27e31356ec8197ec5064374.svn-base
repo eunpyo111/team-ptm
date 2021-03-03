@@ -1,0 +1,32 @@
+package ptm.team.service;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+
+//VO 전부 import 했으니 쓸것만 쓰시고 안쓰면 지워주세요
+import ptm.team.vo.ExerciseVO;
+import ptm.team.vo.PtVO;
+import ptm.team.vo.RoundVO;
+import ptm.team.vo.TrainerVO;
+import ptm.team.vo.MemberVO;
+//DAO
+import ptm.team.dao.T_SearchDAO;
+@Service
+public class  T_SearchServiceImpl implements  T_SearchService{
+	@Inject
+	T_SearchDAO T_memberSearchDAO;
+	@Override
+	public int InsertMember(MemberVO membervo) throws Exception 
+	{
+		
+		return T_memberSearchDAO.InsertMember(membervo);
+	}
+	@Override
+	public int SelectQR(String m_qr) throws Exception {
+
+		return T_memberSearchDAO.SelectQR(m_qr);
+	}
+
+}
